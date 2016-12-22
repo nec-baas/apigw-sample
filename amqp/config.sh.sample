@@ -1,0 +1,13 @@
+#!/bin/sh
+
+# テナントID
+TENANT_ID=
+
+# アプリケーションID
+APP_ID=
+
+# アプリケーションキー
+APP_KEY=
+
+# ベースURL
+BASE_URL=http://localhost:8080/api

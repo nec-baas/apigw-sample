@@ -1,0 +1,40 @@
+swagger: 2.0
+basePath: /http-sample
+x-acl:
+  - g:anonymous
+paths:
+  # パスパラメータを使用するサンプル      
+  # {host} 部分がパスパラメータ
+  /host/{host}:
+    get:
+      x-proxy:
+        method: GET
+        # パスパラメータは ${request.pathParams.パラメータ名} で参照できる
+        uri: http://${request.pathParams.host}
+
+  # クエリパラメータ・リクエストヘッダを使用するサンプル
+  /rewrite_request:
+    get:
+      x-proxy:
+        method: GET
+        # apipath クエリパラメータを URI に展開
+        uri: http://www.example.com/api/${request.queryParams.apipath}
+        request:
+          # ヘッダ変換
+          headers:
+            # デフォルトは全ヘッダを通過
+            default: $pass
+            mapping:
+              # Referrer ヘッダを削除する
+              Referrer: $drop
+              # Accept ヘッダを追加・上書きする
+              Accept: application/json
+              # secret クエリパラメータを X-token ヘッダに付け替え
+              X-token: ${request.queryParams.secret}
+          # クエリパラメータ変換
+          queryParams:
+            # デフォルトは全パラメータを削除
+            default: $drop
+            mapping:
+              # max クエリパラメータを limit に付け替え
+              limit: ${request.queryParams.max}

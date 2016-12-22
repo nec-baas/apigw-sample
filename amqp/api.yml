@@ -1,0 +1,24 @@
+swagger: 2.0
+basePath: /amqp-sample
+x-proxy:
+  host: localhost
+  port: 5672
+  username: guest
+  password: guest
+  vhost: /
+
+paths:
+  /publish:
+    post:
+      x-proxy:
+        type: amqp-publish
+        exchange: apigw-sample-exchange
+        routingKey: key1
+        confirm: false
+
+  /consume:
+    get:
+      x-proxy:
+        type: amqp-consume
+        queue: apigw-sample-queue
+        timeout: 10000
